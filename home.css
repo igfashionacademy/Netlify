@@ -1,0 +1,153 @@
+.home-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  padding-bottom: 90px;
+  text-align: center;
+}
+
+/* Steps: PIN first, then name */
+.step { display: none; flex-direction: column; align-items: center; gap: 12px; }
+.step.active { display: flex; animation: pop .22s ease; }
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Neon input box */
+.neon-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 250px;
+  height: 56px;
+  padding: 0 7px 0 16px;
+  background: transparent;
+  border: 1.5px solid var(--red);
+  border-radius: 16px;
+  box-shadow: var(--neon);
+  transition: box-shadow .2s;
+}
+.neon-box:focus-within { box-shadow: var(--neon-strong); }
+.neon-box.shake { animation: shake .35s; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* PIN field with digit lines */
+.pin-field {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  cursor: text;
+}
+
+.pin-field input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  border: none;
+  z-index: 2;
+}
+
+.pin-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  color: #5c5c5c;
+  font-size: 17px;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.pin-slots {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  padding-right: 4px;
+  pointer-events: none;
+}
+
+.pin-field.active .pin-placeholder { display: none; }
+.pin-field.active .pin-slots { display: flex; }
+
+.slot {
+  flex: 1;
+  height: 32px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 3px;
+  border-bottom: 2px solid #3a3a3a;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 31, 31, .6);
+  transition: border-color .15s;
+}
+.slot.filled { border-color: var(--red); }
+.slot.current { border-color: var(--red); animation: blink 1s steps(2) infinite; }
+
+@keyframes blink {
+  50% { border-color: #3a3a3a; }
+}
+
+/* Name field */
+.name-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 17px;
+  font-weight: 500;
+}
+.name-input::placeholder { color: #5c5c5c; }
+
+/* Send button */
+.pin-send {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255, 31, 31, .6);
+  transition: background .15s, box-shadow .15s, color .15s;
+}
+.pin-send:disabled {
+  background: transparent;
+  color: #4a4a4a;
+  box-shadow: none;
+  cursor: default;
+}
+
+.step-label { font-size: 14px; color: var(--muted); }
+.step-label b { color: var(--red); font-weight: 700; letter-spacing: .12em; }
+
+.link-btn {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 4px 8px;
+}
+.link-btn:hover { color: var(--text); }
+
+.status { min-height: 20px; font-size: 14px; color: var(--muted); max-width: 320px; }
+.status.error { color: var(--red); }
