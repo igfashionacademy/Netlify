@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Netlify</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/lobby.css">
+  <link rel="stylesheet" href="css/panel.css">
+</head>
+<body>
+
+  <!-- Home screen -->
+  <section id="home" class="screen active">
+    <header class="topbar">
+      <div class="brand">Net<span>lify</span></div>
+      <button id="createBtn" class="btn btn-primary">Create lobby</button>
+    </header>
+
+    <main class="home-center">
+      <!-- Step 1: PIN -->
+      <div id="pinStep" class="step active">
+        <form id="pinForm" class="neon-box" autocomplete="off">
+          <label class="pin-field" id="pinField">
+            <input id="pinInput" type="text" inputmode="numeric" maxlength="6" aria-label="Lobby PIN">
+            <span class="pin-placeholder">Enter PIN</span>
+            <span class="pin-slots" id="pinSlots">
+              <span class="slot"></span><span class="slot"></span><span class="slot"></span>
+              <span class="slot"></span><span class="slot"></span><span class="slot"></span>
+            </span>
+          </label>
+          <button id="pinSend" type="submit" class="pin-send" disabled aria-label="Next">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Step 2: name -->
+      <div id="nameStep" class="step">
+        <p id="nameLabel" class="step-label"></p>
+        <form id="nameForm" class="neon-box" autocomplete="off">
+          <input id="nameInput" class="name-input" type="text" maxlength="20" placeholder="Enter name" aria-label="Your name">
+          <button id="nameSend" type="submit" class="pin-send" aria-label="Go">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+        <button id="backBtn" type="button" class="link-btn">Back</button>
+      </div>
+
+      <p id="homeStatus" class="status"></p>
+    </main>
+  </section>
+
+  <!-- Lobby screen -->
+  <section id="lobby" class="screen">
+    <header class="topbar">
+      <button id="leaveBtn" class="btn btn-ghost">Leave</button>
+      <span id="playerCount" class="pill">1 / 8 players</span>
+      <button id="panelBtn" class="btn btn-primary hidden">Panel</button>
+    </header>
+
+    <main class="stage">
+      <div class="tv-col">
+        <div class="tv">
+          <div class="tv-screen">
+            <div id="ytHolder"></div>
+            <div id="tvEmpty" class="tv-empty">
+              <div class="tv-empty-icon"></div>
+              <p>Waiting for the host to pick a video</p>
+            </div>
+            <div id="tvShield" class="tv-shield hidden"></div>
+            <button id="tvStart" class="tv-start hidden">Click to sync</button>
+          </div>
+          <div class="tv-neck"></div>
+          <div class="tv-base"></div>
+        </div>
+        <div id="nowPlaying" class="now-playing"></div>
+      </div>
+
+      <aside class="side">
+        <div class="card">
+          <h3>Players</h3>
+          <ul id="sidePlayers" class="list"></ul>
+        </div>
+        <div class="card">
+          <h3>Up next <span id="queueCount" class="count">0</span></h3>
+          <ul id="sideQueue" class="list"></ul>
+        </div>
+      </aside>
+    </main>
+  </section>
+
+  <!-- Host / OP panel -->
+  <div id="panelBackdrop" class="backdrop"></div>
+  <aside id="panel" class="panel" aria-hidden="true">
+    <div class="panel-head">
+      <h2 id="panelTitle">Host panel</h2>
+      <button id="panelClose" class="icon-btn" aria-label="Close panel">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="panel-body">
+      <div class="card pin-card">
+        <span class="muted">Lobby PIN</span>
+        <div class="pin-row">
+          <span id="pinValue" class="pin-value">000000</span>
+          <button id="copyPin" class="btn btn-ghost btn-sm">Copy</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Video</h3>
+        <input id="videoInput" class="field" type="text" placeholder="Paste a YouTube link">
+        <div class="btn-row">
+          <button id="playNowBtn" class="btn btn-primary">Play now</button>
+          <button id="queueBtn" class="btn btn-ghost">Add to queue</button>
+          <button id="skipBtn" class="btn btn-ghost">Skip</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Queue</h3>
+        <ul id="panelQueue" class="list"></ul>
+      </div>
+
+      <div class="card host-only">
+        <h3>Max players</h3>
+        <div class="stepper">
+          <button id="maxMinus" class="icon-btn" aria-label="Less">-</button>
+          <span id="maxValue">8</span>
+          <button id="maxPlus" class="icon-btn" aria-label="More">+</button>
+        </div>
+      </div>
+
+      <div class="card host-only">
+        <h3>Manage players</h3>
+        <ul id="panelPlayers" class="list"></ul>
+      </div>
+
+      <div class="card host-only">
+        <h3>Banned <span id="bannedCount" class="count">0</span></h3>
+        <ul id="panelBanned" class="list"></ul>
+      </div>
+    </div>
+  </aside>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="js/check.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
